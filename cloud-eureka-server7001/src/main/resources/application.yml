@@ -1,0 +1,21 @@
+server:
+  port: 7001
+
+eureka:
+  instance:
+    hostname: eureka7001.com #eureka server端的实例名称，在host文件中配置localhost与eureka7001.com的映射，实际上就是localhost，只不过在eureka server集群中还有一台微服务server7002,为了区分二者
+    #所以在host文件中配置localhost和eureka7001.com和eureka7002.com的映射
+  client:
+      # false表示不向服务注册中心注册自己
+    register-with-eureka: false
+      # 表明自己就是注册中心
+    fetch-registry: false
+    service-url:
+      #与Eureka Server交互的地址查询服务和注册服务都需要依赖这个地址
+      #在 eureka server集群中的机器需要互相注册
+      defaultZone: http://eureka7002.com:7002/eureka/
+  server:
+    #关闭自我保护机制，保证不可用服务被即使删除
+#    enable-self-preservation: false
+    #eureka client 2s 不向eureka server发送心跳就会执行删除策略
+#    eviction-interval-timer-in-ms: 2000

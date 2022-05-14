@@ -1,0 +1,34 @@
+server:
+  port: 9527
+
+spring:
+  application:
+    name: cloud-gateway
+  cloud:
+      gateway:
+        routes:
+          - id: payment_routh
+  #          uri: http://localhost:8001
+            uri: lb://cloud-payment-service
+            predicates:
+              - Path=/payment/get/**
+          - id: payment_routh2
+  #          uri: http://localhost:8001
+            uri: lb://cloud-payment-service
+            predicates:
+              - Path=/payment/lb/**
+        discovery:
+          locator:
+            enabled: true  #开启从注册中心动态生成路由的功能，用微服务名进行路由
+
+
+eureka:
+  instance:
+    hostname: cloud-gateway-service
+  client:
+    service-url:
+      register-with-eureka: true
+      fetch-registry: true
+      defaultZone: http://eureka7001.com:7001/eureka
+
+
